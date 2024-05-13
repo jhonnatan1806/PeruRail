@@ -4,30 +4,26 @@
 
 ## Tipos de viajes
 
----
-
+**Escenario 1**
 - **Tipo:** SOLO IDA
 - **Servicio:** BELMOND ANDEAN EXPLORER
 - **Destino:** CUSCO
 - **Ruta1:** PUNO > CUSCO
 - **Ruta2:** AREQUIPA > PUNO >CUSCO
 
+**Escenario 2**
 - **Tipo:** IDA Y VUELTA
 - **Servicio:** EXPEDITION
 - **Destino:** MACHUPICCHU
 - **Ruta1:** CUSCO > MACHUPICCHU
 
-## Casos de prueba
-
----
+## Casos de prueba principales
 
 1. Compra de boletos de solo ida, con partida Puno y destino Cusco, usando el servicio Belmond Andean Explorer.
 2. Compra de boletos de solo ida,  con partida Arequipa y destino Cusco, usando el servicio Belmond Andean Explorer
 3. Compra de boletos de ida y vuelta, con partida Cusco y destino Machupichu, usando el servicio PeruRail Expedition
 
-## Regresión
-
----
+## Casos de prueba secundarios
 
 1. Intento de compra de más de 9 boletos en una operación
 2. Compra de boletos sin incluir adultos
@@ -36,15 +32,11 @@
 
 ## qa.properties
 
----
-
 ```bash
 url.website=https://www.perurail.com
 ```
 
-## Tabla busqueda(search)
-
----
+## Tabla busqueda (search)
 
 | tipo         | servicio*               | partida  | destino     |
 |--------------|-------------------------|----------|-------------|
@@ -53,11 +45,8 @@ url.website=https://www.perurail.com
 | IDA Y VUELTA | PERURAIL EXPEDITION     | CUSCO    | MACHUPICCHU |
 
 > **Servicio:** En algunas ocasiones no aparece el campo servicio, considerar la posibilidad.
->
 
 ## Tabla de pasajeros (data)
-
----
 
 | cabinas | adultos | ninhos |
 |---------|---------|--------|
@@ -67,15 +56,11 @@ url.website=https://www.perurail.com
 
 ## Tabla de datos (user)
 
----
-
 | nombre | apellido | genero | pais | dni      | cumple   | telefono  | correo           |
 |--------|----------|--------|------|----------|----------|-----------|------------------|
 | John   | Doe      | M      | PER  | 12345678 | 01/01/20 | 999888777 | john.d@gmail.com |
 
-## TC - 001: Compra de boletos de solo ida, con partida Puno y destino Cusco, usando el servicio Belmond Andean Explorer.
-
----
+## Compra de boletos de solo ida, con partida Puno y destino Cusco, usando el servicio Belmond Andean Explorer.
 
 | Paso a Paso                                                                      | Datos                                                                                                                                                                | Resultado Esperado                                                                                                                        |
 |----------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
@@ -89,4 +74,3 @@ url.website=https://www.perurail.com
 | El usuario selecciona el tipo de tarjeta que va a utilizar                       | tipo: VISA                                                                                                                                                           | El sistema marca con un check verde el tipo de tarjeta seleccionada                                                                       |
 | El usuario acepta los terminos y condiciones                                     |                                                                                                                                                                      | El sistema habilita el boton de pagar                                                                                                     |
 | El usuario ingresa los datos de su tarjeta                                       |                                                                                                                                                                      | El sistema valida el pago                                                                                                                 |
-
