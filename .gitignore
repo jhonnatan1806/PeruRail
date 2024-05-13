@@ -1,0 +1,14 @@
+target/
+.idea/
+.idea/libraries
+test-output/
+build/
+test-results/
+img/
+.git/
+*.log
+/logs/
+/bin
+*.iml
+frontend-reporte.html
+web-automation-framework.iml
