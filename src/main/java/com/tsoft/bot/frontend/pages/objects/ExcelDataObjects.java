@@ -21,6 +21,9 @@ public class ExcelDataObjects {
     public  static final String PAGE_NAME2 = "Caeq";
     public static final String EXCEL_PERURAIL = "excel/DataPeruRail.xlsx";
     public static final String SHEET_SEARCH = "search";
-    public static final String COLUMN_TRIP = "tipo";
+    public static final String SEARCH_COLUMN_TYPE = "tipo";
+    public static final String SEARCH_COLUMN_FROM = "partida";
+    public static final String SEARCH_COLUMN_TO = "destino";
+    public static final String SEARCH_COLUMN_SERVICE = "servicio";
 
 }

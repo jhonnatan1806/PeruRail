@@ -47,7 +47,11 @@ public class SearchPage extends BaseClass {
         try {
             int index = indexRow - 1;
             HashMap<String, String> data = getSheets(ExcelDataObjects.EXCEL_PERURAIL, ExcelDataObjects.SHEET_SEARCH).get(index);
-            String tipo = data.get(ExcelDataObjects.COLUMN_TRIP);
+            String tipo = data.get(ExcelDataObjects.SEARCH_COLUMN_TYPE);
+            String partida = data.get(ExcelDataObjects.SEARCH_COLUMN_FROM);
+            String destino = data.get(ExcelDataObjects.SEARCH_COLUMN_TO);
+            String servicio = data.get(ExcelDataObjects.SEARCH_COLUMN_SERVICE);
+            // validacion de campo tipo de viaje
             if (tipo.equals("SOLO IDA")) {
                 click(driver, PeruRailObjects.INPUT_ONE_WAY);
             } else if (tipo.equals("IDA Y VUELTA")) {
@@ -56,10 +60,21 @@ public class SearchPage extends BaseClass {
             else {
                 mensaje = "No se encontro el tipo de viaje";
                 stepFail(driver,mensaje);
-                generateWord.sendText(mensaje);
-                generateWord.addImageToWord(driver);
                 Assert.fail(mensaje);
             }
+            // validacion de campo partida
+            if(partida.equals("PUNO")){
+                // click
+            }else if(partida.equals("AREQUIPA")){
+                // click
+            }else {
+                mensaje = "No se encontro el campo partida";
+                stepFail(driver,mensaje);
+                Assert.fail(mensaje);
+            }
+
+            generateWord.sendText(mensaje);
+            generateWord.addImageToWord(driver);
         } catch (Exception we) {
             ExcelReader.writeCellValue(ExcelDataObjects.EXCEL_DOC, ExcelDataObjects.PAGE_NAME, 1, 19, "FAIL");
             stepFail(driver,"Fallo en tiempo de respuesta : " + we.getMessage());
