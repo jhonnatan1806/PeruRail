@@ -7,10 +7,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
-import org.apache.poi.xwpf.usermodel.Document;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.*;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -19,8 +16,11 @@ import org.sikuli.script.ScreenImage;
 
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.logging.Logger;
@@ -30,7 +30,6 @@ public class GenerateWord {
 
     private static final String PATH_RELATIVE_WORD = "/src/main/resources/template/Evidencia.docx";
     private static final String TEMPLATE = "/src/main/resources/template/Plantila.png";
-    private static final String WORD_NAME_STANDAR = "Evidencia.docx";
     private static final String FILE_PATH_STANDAR = FileHelper.getProjectFolder() + "/target/resultado/";
     private static final String H_ZONE = "America/Bogota";
     private static final String WORD_EXTENSION = ".docx";
@@ -40,62 +39,120 @@ public class GenerateWord {
     private static XWPFRun run;
     private static FileOutputStream fileOutputStream;
 
-
-
+    private static final String WORD_NAME_STANDARD = "Evidencia.docx";
+    private static final String RESULT_FOLDER = "/target/resultado/";
+    private static final String TEMPLATE_FOLDER = "/src/main/resources/template/";
 
     public static void startUpWord(String name) throws IOException {
-        InputStream insertTemplate = null;
-        XWPFParagraph paragraph;
-        try {
-            File fileUnique = new File(FileHelper.getProjectFolder() + PATH_RELATIVE_WORD);
-            copyExistentWord(fileUnique);
-            document = new XWPFDocument();
-            paragraph = document.createParagraph();
-            run = paragraph.createRun();
-            String carpeta = FILE_PATH_STANDAR;
-            FileUtils.forceMkdir(new File(carpeta));
-            TEMP_WORD_FILE = FileUtils.getFile(carpeta) + "/" + name + "-" + generarSecuencia() + WORD_EXTENSION;
-            fileOutputStream = new FileOutputStream(FileUtils.getFile(carpeta) + "/" + name + "-" + generarSecuencia() + WORD_EXTENSION);
-            insertTemplate = new FileInputStream(FileHelper.getProjectFolder() + TEMPLATE);
-            run.addPicture(insertTemplate, Document.PICTURE_TYPE_PNG, "1", Units.toEMU(440), Units.toEMU(740));
-            run.addBreak();
-        } catch (Exception e) {
-            Logger.getLogger("Show " + e);
-        }finally {
-            if (insertTemplate != null) insertTemplate.close();
+        // Obtener la ubicacion del archivo de origen
+        File sourceFile = new File(FileHelper.getProjectFolder() + TEMPLATE_FOLDER + WORD_NAME_STANDARD);
+        // Obtener la carpeta de destino
+        File targetFolder = new File(FileHelper.getProjectFolder() + RESULT_FOLDER);
+        // Verificar si la carpeta de destino no existe y crearla si es necesario
+        if (!targetFolder.exists()) {
+            targetFolder.mkdirs();
         }
 
+        // Crear el nombre del archivo de destino
+        String fileName = name + "-" + generarSecuencia() + WORD_EXTENSION;
+        // Crear el archivo de destino
+        File targetFile = new File(targetFolder, fileName);
+        // Obtener la ruta absoluta del archivo de destino
+        TEMP_WORD_FILE = new File(targetFolder, fileName).getAbsolutePath();
+        // Copiar el archivo de origen al archivo de destino
+        Files.copy(sourceFile.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         System.out.println("[LOG] Word generado");
+
+        // Abrir el archivo de destino para lectura
+        FileInputStream fis = new FileInputStream(targetFile);
+        // Crear un documento XWPFDocument a partir del archivo de destino
+        document = new XWPFDocument(fis);
+        // Cerrar el flujo de entrada
+        fis.close();
+
+        // TODO: Refactorizar - mover el bloque del metodo a un metodo nuevo llamado writeFrontPage
+        // Obtener el primer parrafo del documento
+        XWPFParagraph paragraph = document.getParagraphs().get(0);
+        paragraph.setAlignment(ParagraphAlignment.CENTER);
+        run = paragraph.getRuns().get(0);
+        // Agregar saltos de linea al inicio del documento
+        breakLine(run, 12, BreakType.TEXT_WRAPPING);
+
+        // Crear el primer parrafo del documento
+        writeParagraph("Escenario: \"" + name +"\"", 24, true);
+        breakLine(run, 1, BreakType.TEXT_WRAPPING);
+
+        // Crear una nueva linea del primer parrafo
+        run = paragraph.createRun();
+        writeParagraph("DOCUMENTO DE EVIDENCIA", 18, true);
+        breakLine(run, 4, BreakType.TEXT_WRAPPING);
+
+        // Crear el segundo parrafo del documento
+        XWPFParagraph paragraph2 = document.createParagraph();
+        paragraph2.setAlignment(ParagraphAlignment.RIGHT);
+
+        // Crear una nueva linea del segundo parrafo
+        run = paragraph2.createRun();
+        writeParagraph(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)), 14, true);
+        breakLine(run, 1, BreakType.TEXT_WRAPPING);
+
+        // Crear una nueva linea del segundo parrafo
+        writeParagraph("Lima - Perú", 14, true);
+        breakLine(run, 1, BreakType.TEXT_WRAPPING);
+
+        // Crear el tercer parrafo del documento vacio con alineacion a la izquierda
+        XWPFParagraph paragraph3 = document.createParagraph();
+        paragraph3.setAlignment(ParagraphAlignment.LEFT);
+        run = paragraph3.createRun();
+
+        // Agregar un salto de pagina al final del documento
+        breakLine(run, 1, BreakType.PAGE);
+
+        // Inicializar el FileOutputStream
+        fileOutputStream = new FileOutputStream(targetFile);
+    }
+
+    public static void writeParagraph(String text, int fontSize, boolean isBold) {
+        // Modificar el estilo del texto
+        run.setText(text);
+        run.setFontSize(fontSize);
+        run.setBold(isBold);
+        run.setFontFamily("Calibri");
+        run.setColor("000000");
+    }
+
+    public static void breakLine(XWPFRun run, int n, BreakType breakType) {
+        // Agregar saltos de linea al documento
+        for(int i = 0; i < n; i++) {
+            run.addBreak(breakType);
+        }
+    }
+
+    public static void endToWord(String status) throws IOException {
+        // Escribir el contenido del documento en el FileOutputStream
+        document.write(fileOutputStream);
+        // Cerrar el FileOutputStream
+        fileOutputStream.close();
+        // Crear un nuevo objeto File para el archivo de destino con el nuevo nombre
+        File fileWithNewName = new File(TEMP_WORD_FILE.split("\\.docx")[0] + "-" + status.toUpperCase() + ".docx");
+        // Crear un nuevo objeto File para el archivo de destino original
+        File renamedFile = new File(TEMP_WORD_FILE);
+
+        // Intentar renombrar el archivo original con el nuevo nombre
+        if (renamedFile.renameTo(fileWithNewName)) {
+            // Imprimir mensaje de confirmacion si se pudo renombrar el archivo
+            System.out.println("[LOG] WORD: Evidencia renombrada - Se añadió el estado final del escenario");
+        } else {
+            // Imprimir mensaje de error si no se pudo renombrar el archivo
+            System.out.println("[LOG] WORD: Evidencia no pudo ser renombrada - No Se añadió el estado final del escenario");
+        }
+
+        System.out.println("[LOG] Word cerrado");
     }
 
     public void sendBreak() {
         run.addBreak();
     }
-
-    public static void copyExistentWord(File file) throws IOException {
-        InputStream input = null;
-        OutputStream output = null;
-        boolean threw = true;
-        try {
-        File fileUnique = new File(file.getPath());
-        File copyFile = new File(WORD_NAME_STANDAR);
-        input = new FileInputStream(fileUnique);
-        output = new FileOutputStream(copyFile);
-        byte[] buffer = new byte[1024];
-            int length;
-            while ((length = input.read(buffer)) > 0) {
-                output.write(buffer, 0, length);
-            }
-            threw = false;
-        } catch (Exception e) {
-            Logger.getLogger("Show: " + e);
-        }finally {
-            IOUtils.closeQuietly(input);
-            assert output != null;
-            output.close();
-    }
-    }
-
 
     public void addImageToWord(WebDriver driver) throws IOException {
         InputStream inputStream = null;
@@ -158,39 +215,6 @@ public class GenerateWord {
         run.addTab();
         run.setFontFamily("Century Gothic");
         run.setFontSize(9);
-    }
-
-    public void endToWord(String status) throws IOException {
-        try {
-
-            document.write(fileOutputStream);
-
-            File fileWithNewName = new File(TEMP_WORD_FILE.split("\\.docx")[0] + "-" + status.toUpperCase() + WORD_EXTENSION);
-
-            if (new File(TEMP_WORD_FILE).renameTo(fileWithNewName)) {
-
-                System.out.println("[LOG] WORD: Evidencia renombrada - Se añadió el estado final del escenario");
-            } else {
-
-                System.out.println("[LOG] WORD: Evidencia no pudo ser renombrada - No Se añadió el estado final del escenario");
-
-            }
-
-            File file = new File(FileHelper.getProjectFolder() + "/Evidencia.docx");
-
-            if (file.exists()) {
-                return;
-            }
-
-            fileOutputStream.close();
-
-        } catch (FileNotFoundException e) {
-            Logger.getLogger("Show: " + e);
-        }
-        finally {
-            System.out.println("");
-        }
-        System.out.println("[LOG] Word cerrado");
     }
 
     private static String generarSecuencia() {
