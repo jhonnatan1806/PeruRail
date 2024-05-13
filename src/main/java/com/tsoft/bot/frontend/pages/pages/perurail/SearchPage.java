@@ -49,13 +49,14 @@ public class SearchPage extends BaseClass {
             validationFrom(data.get(ExcelDataObjects.SEARCH_COLUMN_FROM));
             validationTo(data.get(ExcelDataObjects.SEARCH_COLUMN_TO));
             validationService(data.get(ExcelDataObjects.SEARCH_COLUMN_SERVICE));
+            // se ingresan los datos correctamente
+            stepPass(driver,mensaje);
+            generateWord.sendText(mensaje);
+            generateWord.addImageToWord(driver);
             // click en boton buscar
             click(driver, PeruRailObjects.SEARCH_BUTTON);
             // cambiar de pestaña
             switchToNewTab(driver);
-            stepPass(driver,mensaje);
-            generateWord.sendText(mensaje);
-            generateWord.addImageToWord(driver);
         } catch (Exception we) {
             ExcelReader.writeCellValue(ExcelDataObjects.EXCEL_DOC, ExcelDataObjects.PAGE_NAME, 1, 19, "FAIL");
             mensaje = "Fallo en tiempo de respuesta";
