@@ -27,8 +27,7 @@
 
 1. Intento de compra de más de 9 boletos en una operación
 2. Compra de boletos sin incluir adultos
-3. Verificación de disponibilidad de cabinas
-4. Selección de más de 9 cabinas en una operación
+3. Selección de más de 9 cabinas en una operación
 
 ## qa.properties
 
