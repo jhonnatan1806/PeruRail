@@ -51,28 +51,65 @@ public class SearchPage extends BaseClass {
             String partida = data.get(ExcelDataObjects.SEARCH_COLUMN_FROM);
             String destino = data.get(ExcelDataObjects.SEARCH_COLUMN_TO);
             String servicio = data.get(ExcelDataObjects.SEARCH_COLUMN_SERVICE);
-            // validacion de campo tipo de viaje
+            // validacion de boton tipo de viaje
             if (tipo.equals("SOLO IDA")) {
-                click(driver, PeruRailObjects.INPUT_ONE_WAY);
+                click(driver, PeruRailObjects.TYPE_BUTTON_ONEWAY);
             } else if (tipo.equals("IDA Y VUELTA")) {
-                click(driver, PeruRailObjects.INPUT_ROUND_TRIP);
+                click(driver, PeruRailObjects.TYPE_BUTTON_ROUNDTRIP);
             }
             else {
                 mensaje = "No se encontro el tipo de viaje";
                 stepFail(driver,mensaje);
                 Assert.fail(mensaje);
             }
-            // validacion de campo partida
+            sleep(500);
+            // validacion de menu desplegable from
             if(partida.equals("PUNO")){
-                // click
-            }else if(partida.equals("AREQUIPA")){
-                // click
-            }else {
+                click(driver, PeruRailObjects.FROM_SELECT);
+                sleep(250);
+                click(driver, PeruRailObjects.FROM_OPTION_PUNO);
+            } else if(partida.equals("AREQUIPA")){
+                click(driver, PeruRailObjects.FROM_SELECT);
+                sleep(250);
+                click(driver, PeruRailObjects.FROM_OPTION_AREQUIPA);
+            } else {
                 mensaje = "No se encontro el campo partida";
                 stepFail(driver,mensaje);
                 Assert.fail(mensaje);
             }
-
+            sleep(500);
+            // validacion de menu desplegable destino
+            if(destino.equals("CUSCO")){
+                click(driver, PeruRailObjects.TO_SELECT);
+                sleep(250);
+                click(driver, PeruRailObjects.TO_OPTION_CUSCO);
+            } else {
+                mensaje = "No se encontro el campo destino";
+                stepFail(driver,mensaje);
+                Assert.fail(mensaje);
+            }
+            sleep(500);
+            // validacion de menu desplegable servicio
+            if(servicio.equals("BELMOND ANDEAN EXPLORER")){
+                click(driver, PeruRailObjects.SERVICE_SELECT);
+                sleep(250);
+                click(driver, PeruRailObjects.SERVICE_OPTION_BELMOND);
+            } else if(servicio.equals("PERURAIL EXPEDITION")){
+                click(driver, PeruRailObjects.SERVICE_SELECT);
+                sleep(250);
+                click(driver, PeruRailObjects.SERVICE_OPTION_EXPEDITION);
+            }
+            else {
+                // aveces no aparece la opcion por lo tanto
+                // no deberia generar error el hecho que no este
+            }
+            sleep(500);
+            // click en boton buscar
+            click(driver, PeruRailObjects.SEARCH_BUTTON);
+            sleep(500);
+            // cambiar de pestaña
+            switchToNewTab(driver);
+            stepPass(driver,mensaje);
             generateWord.sendText(mensaje);
             generateWord.addImageToWord(driver);
         } catch (Exception we) {

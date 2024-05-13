@@ -13,5 +13,5 @@ Feature: Realizar compra de boletos de tren
         Then se validan los detalles de la compra
         And se realiza la compra de los boleto
         Examples:
-            | busqueda | cabin | user |
-            | 1        | 2     | 1, 2 |
+            | busqueda | cabin | user   |
+            | 1        | 2     | 1,2    |

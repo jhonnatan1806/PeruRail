@@ -16,15 +16,16 @@ public class StepsPayment {
 
     @And("^se selecciona el metodo de pago y se aceptan los TyC$")
     public void seSeleccionaElMetodoDePagoYSeAceptanLosTyC() {
+        //
     }
 
     @Then("^se validan los detalles de la compra$")
     public void seValidanLosDetallesDeLaCompra() {
-        
+        //
     }
 
     @And("^se realiza la compra de los boleto$")
     public void seRealizaLaCompraDeLosBoleto() {
-
+        //
     }
 }

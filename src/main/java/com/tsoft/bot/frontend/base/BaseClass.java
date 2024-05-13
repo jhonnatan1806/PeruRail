@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -204,5 +205,24 @@ public class BaseClass {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    protected void clickAfterWait(WebDriver driver, By locator, int ms) throws IOException {
+        try {
+            Thread.sleep(ms);
+            driver.findElement(locator).click();
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            Logger.getLogger("[LOG]-InterruptedException: " + ie);
+            throw new RuntimeException("Thread interrupted while waiting to click", ie);
+        } catch (RuntimeException we) {
+            errorNoElementFound(driver, locator);
+            throw we;
+        }
+    }
+
+    protected void switchToNewTab(WebDriver driver) {
+        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(tabs.size() - 1));
     }
 }
