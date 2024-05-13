@@ -9,23 +9,17 @@ import com.tsoft.bot.frontend.utility.GenerateWord;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
 public class SearchPage extends BaseClass {
 
-    private WebDriver driver;
-    private static GenerateWord generateWord = new GenerateWord();
+    private final WebDriver driver;
+    private static final GenerateWord generateWord = new GenerateWord();
     String mensaje;
 
     public SearchPage(WebDriver driver) {
         super(driver);
         this.driver = Hook.getDriver();
-    }
-
-    private List<HashMap<String, String>> getData() throws Throwable {
-        return ExcelReader.data(ExcelDataObjects.EXCEL_SAUCE, ExcelDataObjects.HOJA_LOGIN_SAUCE);
     }
 
     public void openUrl(String readProperties) throws Exception {
