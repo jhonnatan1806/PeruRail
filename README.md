@@ -42,7 +42,7 @@
 url.website=https://www.perurail.com
 ```
 
-## Tabla busqueda
+## Tabla busqueda(search)
 
 ---
 
@@ -55,7 +55,7 @@ url.website=https://www.perurail.com
 > **Servicio:** En algunas ocasiones no aparece el campo servicio, considerar la posibilidad.
 >
 
-## Tabla de pasajeros
+## Tabla de pasajeros (data)
 
 ---
 
@@ -65,7 +65,7 @@ url.website=https://www.perurail.com
 | 1       | 0       | 1      |
 | 6       | 6       | 4      |
 
-## Tabla de datos
+## Tabla de datos (user)
 
 ---
 

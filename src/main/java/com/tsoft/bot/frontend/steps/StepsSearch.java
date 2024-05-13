@@ -4,6 +4,7 @@ import com.tsoft.bot.frontend.helpers.Hook;
 import com.tsoft.bot.frontend.pages.pages.perurail.SearchPage;
 import com.tsoft.bot.frontend.utility.ReadProperties;
 import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.WebDriver;
@@ -20,13 +21,12 @@ public class StepsSearch {
 
     @Given("^que el usuario se encuentra en la pagina de inicio del sitio web$")
     public void queElUsuarioSeEncuentraEnLaPaginaDeInicioDelSitioWeb() throws Exception {
-        String readProperties = ReadProperties.get("URL", "qa");
-        searchPage.openUrl(readProperties);
+        searchPage.openUrl(ReadProperties.get("url.website", "qa"));
     }
 
-    @When("^el usuario selecciona las opciones de busqueda de su viaje \"(\\d+)\"$")
-    public void elUsuarioSeleccionaLasOpcionesDeBusquedaDeSuViaje(int indexRow) throws Throwable {
-        searchPage.searchTrip(indexRow);
+    @When("^el usuario selecciona las opciones de busqueda de su viaje \"([^\"]*)\"$")
+    public void elUsuarioSeleccionaLasOpcionesDeBusquedaDeSuViaje(String arg0) throws Throwable {
+        searchPage.searchTrip(Integer.parseInt(arg0));
     }
 
 }
