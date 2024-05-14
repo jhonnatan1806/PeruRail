@@ -9,7 +9,7 @@
 - **Servicio:** BELMOND ANDEAN EXPLORER
 - **Destino:** CUSCO
 - **Ruta1:** PUNO > CUSCO
-- **Ruta2:** AREQUIPA > PUNO >CUSCO
+- **Ruta2:** AREQUIPA > PUNO > CUSCO
 
 **Escenario 2**
 - **Tipo:** IDA Y VUELTA
@@ -17,13 +17,13 @@
 - **Destino:** MACHUPICCHU
 - **Ruta1:** CUSCO > MACHUPICCHU
 
-## Casos de prueba principales
+## Casos de prueba: Compra de boletos
 
 1. Compra de boletos de solo ida, con partida Puno y destino Cusco, usando el servicio Belmond Andean Explorer.
 2. Compra de boletos de solo ida,  con partida Arequipa y destino Cusco, usando el servicio Belmond Andean Explorer
 3. Compra de boletos de ida y vuelta, con partida Cusco y destino Machupichu, usando el servicio PeruRail Expedition
 
-## Casos de prueba secundarios
+## Casos de prueba: Regresion
 
 1. Intento de compra de más de 9 boletos en una operación
 2. Compra de boletos sin incluir adultos
