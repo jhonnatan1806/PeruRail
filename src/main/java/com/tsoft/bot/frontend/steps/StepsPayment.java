@@ -24,8 +24,8 @@ public class StepsPayment {
         //
     }
 
-    @And("^se realiza la compra de los boleto$")
-    public void seRealizaLaCompraDeLosBoleto() {
+    @And("^se realiza la compra de los boletos$")
+    public void seRealizaLaCompraDeLosBoletos() {
         //
     }
 }

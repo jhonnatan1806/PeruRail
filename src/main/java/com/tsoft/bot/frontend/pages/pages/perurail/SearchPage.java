@@ -54,7 +54,7 @@ public class SearchPage extends BaseClass {
             generateWord.sendText(mensaje);
             generateWord.addImageToWord(driver);
             // click en boton buscar
-            click(driver, PeruRailObjects.SEARCH_BUTTON);
+            click(driver, PeruRailObjects.BUTTON_SEARCH);
             // cambiar de pestaña
             switchToNewTab(driver);
         } catch (Exception we) {
@@ -70,9 +70,9 @@ public class SearchPage extends BaseClass {
     private void validationType(String type) throws Exception {
         sleep(500);
         if (type.equals("SOLO IDA")) {
-            click(driver, PeruRailObjects.TYPE_BUTTON_ONEWAY);
+            click(driver, PeruRailObjects.BUTTON_TYPE_ONEWAY);
         } else if (type.equals("IDA Y VUELTA")) {
-            click(driver, PeruRailObjects.TYPE_BUTTON_ROUNDTRIP);
+            click(driver, PeruRailObjects.BUTTON_TYPE_ROUNDTRIP);
         }
         else {
             mensaje = "No se encontro el tipo de viaje";
@@ -84,13 +84,13 @@ public class SearchPage extends BaseClass {
     private void validationFrom(String from) throws Exception {
         sleep(500);
         if(from.equals("PUNO")){
-            click(driver, PeruRailObjects.FROM_SELECT);
+            click(driver, PeruRailObjects.SELECT_FROM);
             sleep(250);
-            click(driver, PeruRailObjects.FROM_OPTION_PUNO);
+            click(driver, PeruRailObjects.OPTION_FROM_PUNO);
         } else if(from.equals("AREQUIPA")){
-            click(driver, PeruRailObjects.FROM_SELECT);
+            click(driver, PeruRailObjects.SELECT_FROM);
             sleep(250);
-            click(driver, PeruRailObjects.FROM_OPTION_AREQUIPA);
+            click(driver, PeruRailObjects.OPTION_FROM_AREQUIPA);
         } else {
             mensaje = "No se encontro el campo partida";
             stepFail(driver,mensaje);
@@ -101,9 +101,9 @@ public class SearchPage extends BaseClass {
     private void validationTo(String to) throws Exception {
         sleep(500);
         if(to.equals("CUSCO")){
-            click(driver, PeruRailObjects.TO_SELECT);
+            click(driver, PeruRailObjects.SELECT_TO);
             sleep(250);
-            click(driver, PeruRailObjects.TO_OPTION_CUSCO);
+            click(driver, PeruRailObjects.OPTION_TO_CUSCO);
         } else {
             mensaje = "No se encontro el campo destino";
             stepFail(driver,mensaje);
@@ -114,13 +114,13 @@ public class SearchPage extends BaseClass {
     private void validationService(String service) throws Exception {
         sleep(500);
         if(service.equals("BELMOND ANDEAN EXPLORER")){
-            click(driver, PeruRailObjects.SERVICE_SELECT);
+            click(driver, PeruRailObjects.SELECT_SERVICE);
             sleep(250);
-            click(driver, PeruRailObjects.SERVICE_OPTION_BELMOND);
+            click(driver, PeruRailObjects.OPTION_SERVICE_BELMOND);
         } else if(service.equals("PERURAIL EXPEDITION")){
-            click(driver, PeruRailObjects.SERVICE_SELECT);
+            click(driver, PeruRailObjects.SELECT_SERVICE);
             sleep(250);
-            click(driver, PeruRailObjects.SERVICE_OPTION_EXPEDITION);
+            click(driver, PeruRailObjects.OPTION_SERVICE_EXPEDITION);
         }
         else {
             mensaje = "No se encontro el campo servicio";
