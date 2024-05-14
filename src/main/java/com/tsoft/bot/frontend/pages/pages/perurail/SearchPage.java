@@ -9,6 +9,7 @@ import com.tsoft.bot.frontend.utility.GenerateWord;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class SearchPage extends BaseClass {
@@ -127,5 +128,9 @@ public class SearchPage extends BaseClass {
             stepFail(driver,mensaje);
             Assert.fail(mensaje); // retorna error en la prueba
         }
+    }
+
+    public void validateTrainsPage() throws IOException {
+        sleep(15000);
     }
 }

@@ -23,4 +23,8 @@ public class StepsPassengers {
         }
     }
 
+    @And("^se completa los datos de los pasajeros$")
+    public void seCompletaLosDatosDeLosPasajeros() {
+
+    }
 }

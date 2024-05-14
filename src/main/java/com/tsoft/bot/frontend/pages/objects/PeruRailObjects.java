@@ -33,6 +33,7 @@ public class PeruRailObjects {
     public static final By SELECT_CABIN_TWIN = By.xpath("//select[@id='ddl-SelectRooms-tw']");
     public static final By SELECT_CABIN_BUNK = By.xpath("//select[@id='ddl-SelectRooms-bu']");
     public static final By BUTTON_CONTINUE_TRAINS = By.xpath("//button[@id='btnSiguiente_trenes']");
+    public static final By DIV_PRELOADER = By.xpath("//div[@id='preloader']") ;
 
     /* ========================
      * PASSENGERS DATA SECTION (sera dinamico)

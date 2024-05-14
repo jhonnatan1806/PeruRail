@@ -27,6 +27,7 @@ public class StepsSearch {
     @When("^el usuario selecciona las opciones de busqueda de su viaje \"([^\"]*)\"$")
     public void elUsuarioSeleccionaLasOpcionesDeBusquedaDeSuViaje(String arg0) throws Throwable {
         searchPage.searchTrip(Integer.parseInt(arg0));
+        searchPage.validateTrainsPage();
     }
 
 }
