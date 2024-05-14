@@ -45,7 +45,7 @@ url.website=https://www.perurail.com
 
 > **Servicio:** En algunas ocasiones no aparece el campo servicio, considerar la posibilidad.
 
-## Tabla de pasajeros (data)
+## Tabla de pasajeros (trains)
 
 | cabinas | adultos | ninhos |
 |---------|---------|--------|
@@ -53,13 +53,13 @@ url.website=https://www.perurail.com
 | 1       | 0       | 1      |
 | 6       | 6       | 4      |
 
-## Tabla de datos (user)
+## Tabla de datos (passengers data)
 
 | nombre | apellido | genero | pais | dni      | cumple   | telefono  | correo           |
 |--------|----------|--------|------|----------|----------|-----------|------------------|
 | John   | Doe      | M      | PER  | 12345678 | 01/01/20 | 999888777 | john.d@gmail.com |
 
-## Compra de boletos de solo ida, con partida Puno y destino Cusco, usando el servicio Belmond Andean Explorer.
+## Compra de boletos de solo ida, con partida Puno y destino Cusco, usando el servicio Belmond Andean Explorer
 
 | Paso a Paso                                                                      | Datos                                                                                                                                                                | Resultado Esperado                                                                                                                        |
 |----------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
