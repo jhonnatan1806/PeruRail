@@ -20,10 +20,6 @@ asegurando que las actualizaciones no afecten las funcionalidades existentes.
 - **Simulación de Proceso de Pago:** Automatizar las pruebas para el proceso de pago, incluyendo la selección de tipo de tarjeta y la confirmación de la compra.
 - **Verificación de Restricciones de Compra:** Asegurar que el sistema cumpla con las restricciones establecidas, como el límite de 9 boletos por sesión y la necesidad de incluir al menos un adulto por operación.
 
-
-
-**Página:** [https://www.perurail.com/](https://www.perurail.com/)
-
 ## Tipos de viajes
 
 **Escenario 1**
