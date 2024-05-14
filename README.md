@@ -1,5 +1,27 @@
 # Tarea Automatizacion
 
+## Descripción del Proyecto
+
+Este proyecto se enfoca en la automatización de pruebas funcionales para el sistema de reserva de viajes de PeruRail. 
+El objetivo es crear scripts automatizados que validen el correcto funcionamiento del proceso de booking de viajes, 
+asegurando que las actualizaciones no afecten las funcionalidades existentes.
+
+## Objetivos
+
+- **Automatizar el Proceso de Pruebas:** Minimizar la necesidad de pruebas manuales mediante la automatización de los casos de prueba ya diseñados.
+- **Validar Funcionalidades Post-Actualización:** Asegurar que las nuevas implementaciones no alteren o afecten las funcionalidades existentes del sistema de booking.
+- **Optimización de la Experiencia de Usuario:** Garantizar una experiencia de usuario fluida y libre de errores durante todo el proceso de reserva de viajes.
+
+## Funcionalidades
+
+- **Automatización de Formularios de Reserva:** Implementar pruebas para automatizar la entrada de datos en los formularios de búsqueda y selección de viajes.
+- **Validación de Opciones de Viaje:** Verificar las funcionalidades de selección de tipo de viaje, tren y horarios, incluyendo la gestión de cabinas y la selección de itinerarios.
+- **Pruebas de Completitud en Datos del Pasajero:** Automatizar el proceso de entrada de datos personales y validaciones correspondientes.
+- **Simulación de Proceso de Pago:** Automatizar las pruebas para el proceso de pago, incluyendo la selección de tipo de tarjeta y la confirmación de la compra.
+- **Verificación de Restricciones de Compra:** Asegurar que el sistema cumpla con las restricciones establecidas, como el límite de 9 boletos por sesión y la necesidad de incluir al menos un adulto por operación.
+
+
+
 **Página:** [https://www.perurail.com/](https://www.perurail.com/)
 
 ## Tipos de viajes
@@ -25,9 +47,9 @@
 
 ## Validaciones
 
-1. Intento de compra de más de 9 boletos en una operación
-2. Compra de boletos sin incluir adultos
-3. Selección de más de 9 cabinas en una operación
+1. Validación de Límite Máximo de Boletos por Operación
+2. Verificación de Inclusión de Adultos en la Compra de Boletos
+3. Control de Límite de Cabinas por Reserva
 
 ## Configuración de ambiente
 
