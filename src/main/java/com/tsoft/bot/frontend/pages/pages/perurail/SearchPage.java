@@ -40,7 +40,7 @@ public class SearchPage extends BaseClass {
         }
     }
 
-    public void searchTrip(int indexRow) throws Throwable{
+    public void addSearchData(int indexRow) throws Throwable{
         mensaje = "Se ingresa los datos de busqueda";
         try {
             int index = indexRow - 1;
@@ -54,10 +54,6 @@ public class SearchPage extends BaseClass {
             stepPass(driver,mensaje);
             generateWord.sendText(mensaje);
             generateWord.addImageToWord(driver);
-            // click en boton buscar
-            click(driver, PeruRailObjects.BUTTON_SEARCH);
-            // cambiar de pestaña
-            switchToNewTab(driver);
         } catch (Exception we) {
             ExcelReader.writeCellValue(ExcelDataObjects.EXCEL_DOC, ExcelDataObjects.PAGE_NAME, 1, 19, "FAIL");
             mensaje = "Fallo en tiempo de respuesta";
@@ -130,7 +126,12 @@ public class SearchPage extends BaseClass {
         }
     }
 
-    public void validateTrainsPage() throws IOException {
+    public void performSearch() throws IOException {
+        // click en boton buscar
+        click(driver, PeruRailObjects.BUTTON_SEARCH);
+        sleep(500);
+        // cambiar de pestaña
+        switchToNewTab(driver);
         sleep(15000);
     }
 }

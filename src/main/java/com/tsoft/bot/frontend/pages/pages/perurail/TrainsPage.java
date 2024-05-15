@@ -9,6 +9,7 @@ import com.tsoft.bot.frontend.utility.GenerateWord;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openxmlformats.schemas.drawingml.x2006.diagram.STOutputShapeType;
 
 import java.util.HashMap;
 
@@ -44,7 +45,7 @@ public class TrainsPage extends BaseClass {
 
     private void validateCabin(String type, int n) throws Exception {
         sleep(500);
-        if(type.equals("CS") && n > 0){
+        if(type.equals("SC") && n > 0){
             click(driver, PeruRailObjects.SELECT_CABIN_SUITE);
             sleep(250);
             click(driver, By.xpath("//select[@id='ddl-SelectRooms-sc']/option[@value='"+n+"']"));
@@ -53,7 +54,7 @@ public class TrainsPage extends BaseClass {
             sleep(250);
             click(driver, By.xpath("//select[@id='ddl-SelectRooms-tw']/option[@value='"+n+"']"));
         }else if (type.equals("BU") && n > 0){
-            click(driver, PeruRailObjects.SELECT_CABIN_TWIN);
+            click(driver, PeruRailObjects.SELECT_CABIN_BUNK);
             sleep(250);
             click(driver, By.xpath("//select[@id='ddl-SelectRooms-bu']/option[@value='"+n+"']"));
         }else{
@@ -65,6 +66,49 @@ public class TrainsPage extends BaseClass {
         }
     }
 
-    public void selectPassengers(int indexRow) {
+    public void selectPassengers(int indexRow) throws Exception {
+        mensaje = "Se selecciona los pasajeros";
+        try{
+            int index = indexRow - 1;
+            HashMap<String, String> data = getSheets(ExcelDataObjects.EXCEL_PERURAIL, ExcelDataObjects.SHEET_TRAINS).get(index);
+            String type = data.get(ExcelDataObjects.TRAIN_COLUMN_TYPE);
+            int n = Integer.parseInt(data.get(ExcelDataObjects.TRAIN_COLUMN_N));
+            for(int i = 1; i <= n; i++){
+                // variables dinamicas
+                String CABIN_SUITE_ADULT = "//select[@name='selectRooms["+type.toLowerCase()+"][cabinas][cab"+i+"][adult]']";
+                String CABIN_SUITE_CHILDREN = "//select[@name='selectRooms["+type.toLowerCase()+"][cabinas][cab"+i+"][nin]']";
+                int CABIN_SUITE_ADULT_N = Integer.parseInt(data.get("cab"+i+" adulto"));
+                int CABIN_SUITE_CHILDREN_N = Integer.parseInt(data.get("cab"+i+" ninho"));
+
+                // xpaths
+                By SELECT_CABIN_SUITE_CI_ADULT = By.xpath(CABIN_SUITE_ADULT);
+                By SELECT_CABIN_SUITE_CI_CHILDREN = By.xpath(CABIN_SUITE_CHILDREN);
+                By OPTION_CABIN_SUITE_CI_ADULT = By.xpath(CABIN_SUITE_ADULT+"/option[@value='"+CABIN_SUITE_ADULT_N+"']");
+                By OPTION_CABIN_SUITE_CI_CHILDREN = By.xpath(CABIN_SUITE_CHILDREN+"/option[@value='"+CABIN_SUITE_CHILDREN_N+"']");
+
+                sleep(500);
+                click(driver, SELECT_CABIN_SUITE_CI_ADULT);
+                sleep(250);
+                click(driver, OPTION_CABIN_SUITE_CI_ADULT);
+
+                if(CABIN_SUITE_ADULT_N < 2) {
+                    sleep(500);
+                    click(driver, SELECT_CABIN_SUITE_CI_CHILDREN);
+                    sleep(250);
+                    click(driver, OPTION_CABIN_SUITE_CI_CHILDREN);
+                }
+
+            }
+            generateWord.sendText(mensaje);
+            generateWord.addImageToWord(driver);
+            stepPass(driver,mensaje);
+        }catch(Throwable we){
+            ExcelReader.writeCellValue(ExcelDataObjects.EXCEL_DOC, ExcelDataObjects.PAGE_NAME, 1, 19, "FAIL");
+            mensaje = "Fallo en tiempo de respuesta";
+            stepFail(driver,mensaje);
+            generateWord.sendText(mensaje);
+            generateWord.addImageToWord(driver);
+            Assert.fail(mensaje);
+        }
     }
 }

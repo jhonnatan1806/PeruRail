@@ -20,8 +20,9 @@ public class StepsTrains {
         String[] collection = arg0.split(",");
         for(String item : collection){
             trainsPage.selectCabin(Integer.parseInt(item));
+            trainsPage.selectPassengers(Integer.parseInt(item));
         }
-        //trainsPage.selectPassengers(Integer.parseInt(arg0));
+        //
     }
 
     @Then("^el sistema muestra un mensaje de error$")
