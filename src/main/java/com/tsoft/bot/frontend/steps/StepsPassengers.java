@@ -30,5 +30,6 @@ public class StepsPassengers {
             }
         }
         passengersPage.fillPassengers(cabins);
+        passengersPage.clickContinue();
     }
 }

@@ -70,4 +70,12 @@ public class PeruRailObjects {
 
     public static final By BUTTON_CONTINUE_PASSENGERS = By.xpath("//button[@id='btnSiguienteReserva']");
 
+    /* ========================
+     * PAYMENT
+     * ======================== */
+
+    public static final By BUTTON_SELECT_VISA = By.xpath("//div[@class='t-visa payment-card']");
+    public static final By BUTTON_TYC = By.xpath("//input[@id='accept-term']/following-sibling::span");
+    public static final By BUTTON_PAYNOW = By.xpath("//button[@id='btnSiguientePago']");
+
 }

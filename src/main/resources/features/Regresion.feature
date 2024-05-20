@@ -8,12 +8,12 @@ Feature: Pruebas de Regresion
         When el usuario selecciona las opciones de busqueda de su viaje "<search>"
         And selecciona la cantidad de cabinas y pasajeros "<trains>"
         And se completa los datos de los pasajeros "<trains>"
-        And se selecciona el metodo de pago y se aceptan los TyC
+        And se selecciona el metodo de pago y se aceptan los TyC "<payment>"
         Then se validan los detalles de la compra
         And se realiza la compra de los boletos
         Examples:
-            | search    | trains    |
-            | 1         | 1,2       |
+            | search    | trains    | payment |
+            | 1         | 1,2       | 1       |
 
     Scenario Outline: Validacion de limite maximo de reserva de cabinas por operacion
         When el usuario selecciona las opciones de busqueda de su viaje "<search>"

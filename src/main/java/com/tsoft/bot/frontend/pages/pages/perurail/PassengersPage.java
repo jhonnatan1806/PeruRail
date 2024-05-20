@@ -1,10 +1,13 @@
 package com.tsoft.bot.frontend.pages.pages.perurail;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.tsoft.bot.frontend.base.BaseClass;
 import com.tsoft.bot.frontend.helpers.Hook;
 import com.tsoft.bot.frontend.models.Cabin;
 import com.tsoft.bot.frontend.models.Passenger;
 import com.tsoft.bot.frontend.pages.objects.ExcelDataObjects;
+import com.tsoft.bot.frontend.pages.objects.PeruRailObjects;
+import com.tsoft.bot.frontend.utility.ExcelReader;
 import com.tsoft.bot.frontend.utility.GenerateWord;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -44,23 +47,15 @@ public class PassengersPage extends BaseClass {
 
     public void fillPassengers(List<Cabin> cabins) throws Throwable {
         // número de pasajeros
-        int nCabins = cabins.size();
-        int nPassegersAdults = getNPassengersAdults(cabins);
-        int nPassegersChildren = getNPassengersChildren(cabins);
-
-        // cabinas por tipo
-        List<Cabin> cabinsSC = filterCabin("SC", cabins);
-        List<Cabin> cabinsTW = filterCabin("TW", cabins);
-        List<Cabin> cabinsBU = filterCabin("BU", cabins);
 
         List<Cabin> cabinSorted = new ArrayList<>();
-        cabinSorted.addAll(cabinsBU);
-        cabinSorted.addAll(cabinsTW);
-        cabinSorted.addAll(cabinsSC);
+        cabinSorted.addAll(filterCabin("BU", cabins));
+        cabinSorted.addAll(filterCabin("TW", cabins));
+        cabinSorted.addAll(filterCabin("SC", cabins));
 
         // pasajeros por tipo
-        List<Passenger> passengersAdults = getPassengersAdults(nPassegersAdults);
-        List<Passenger> passengersChildren = getPassengersChildren(nPassegersChildren);
+        List<Passenger> passengersAdults = getPassengersAdults(passengerAdultSize(cabins));
+        List<Passenger> passengersChildren = getPassengersChildren(passengerChildrenSize(cabins));
 
         int counter = 0;
 
@@ -83,51 +78,133 @@ public class PassengersPage extends BaseClass {
         }
     }
 
-    private int  fillPassengersAdult(Cabin cabin, int i, List<Passenger> passengers) throws IOException {
-        for (int j = 0; j < cabin.getAdults(); j++) {
-            if (i != 0 || j != 0) {
-                sleep(500);
-                By BUTTON_PASSENGER = By.xpath("//a[@id='expandirPasajero-" + (i+j) + "']");
-                click(driver, BUTTON_PASSENGER);
+    private int  fillPassengersAdult(Cabin cabin, int i, List<Passenger> passengers) throws Exception {
+        try {
+            for (int j = 0; j < cabin.getAdults(); j++) {
+                Passenger passenger = passengers.remove(0);
+
+                // si no es el primer pasajero
+                if (i != 0 || j != 0) {
+                    sleep(500);
+                    By BUTTON_PASSENGER = By.xpath("//a[@id='expandirPasajero-" + (i + j) + "']");
+                    click(driver, BUTTON_PASSENGER);
+                }
+
+                String INPUT_FIRSTNAME = "//input[@id='ListaPasajeros[" + (i + j) + "].NombrePax']";
+                String INPUT_SURNAME = "//input[@id='ListaPasajeros[" + (i + j) + "].ApellidoPax']";
+                String INPUT_GENDER = "//input[@name='ListaPasajeros[" + (i + j) + "].SexoPax']"; // no implementado
+                String INPUT_COUNTRY = "//select[@name='ListaPasajeros[" + (i + j) + "].NacionalidadPax']";
+                String INPUT_TYPEDOC = "//select[@name='ListaPasajeros[" + (i + j) + "].TipoDocumentoPax']";
+                String INPUT_DOCUMENT = "//input[@name='ListaPasajeros[" + (i + j) + "].NroDocumentoPax']";
+                String INPUT_TELEPHONE = "//input[@name='ListaPasajeros[" + (i + j) + "].TelefonoPax']";
+                String INPUT_EMAIL = "//input[@name='ListaPasajeros[" + (i + j) + "].EmailPax']";
+                String INPUT_EMAIL_CONFIRM = "//input[@name='ListaPasajeros[" + (i + j) + "].EmailPaxConfirm']";
+                String INPUT_BIRTHDAY = "//input[@name='ListaPasajeros[" + (i + j) + "].NacimientoPax']";
+
+                typeText(driver, By.xpath(INPUT_FIRSTNAME), passenger.getFirstName());
+                sleep(250);
+                typeText(driver, By.xpath(INPUT_SURNAME), passenger.getSurname());
+                sleep(250);
+                typeText(driver, By.xpath(INPUT_COUNTRY), passenger.getCountry());
+                // click(driver, By.xpath(INPUT_GENDER)); // falta implementar
+                sleep(250);
+                typeText(driver, By.xpath(INPUT_TYPEDOC), passenger.getTypedoc());
+                sleep(250);
+                typeText(driver, By.xpath(INPUT_DOCUMENT), passenger.getDocument());
+                sleep(250);
+                click(driver, By.xpath(INPUT_BIRTHDAY));
+                fillBirthday(18, 6,2000);
+
+                if (i == 0 && j == 0) {
+                    sleep(250);
+                    typeText(driver, By.xpath(INPUT_TELEPHONE), passenger.getTelephone());
+                    sleep(250);
+                    typeText(driver, By.xpath(INPUT_EMAIL), passenger.getEmail());
+                    sleep(250);
+                    typeText(driver, By.xpath(INPUT_EMAIL_CONFIRM), passenger.getEmail());
+                }
+                mensaje = "pasajero aldulto " + (i+j) + " agregado correctamente";
+                generateWord.sendText(mensaje);
+                generateWord.addImageToWord(driver);
+                stepPass(driver,mensaje);
             }
-
-            String INPUT_FIRSTNAME = "//input[@id='ListaPasajeros[" + i + "].NombrePax']";
-            String INPUT_SURNAME = "//input[@id='ListaPasajeros[" + i + "].ApellidoPax']";
-            String INPUT_GENDER = "//input[@name='ListaPasajeros[" + i + "].SexoPax' and @value='1']";
-
-            Passenger passenger = passengers.remove(0);
-            System.out.println("Adulto: " + passenger.getFirstName());
-            System.out.println("Adulto: " + passenger.getSurname());
-            System.out.println("Adulto: " + passenger.getGender());
-            System.out.println("Adulto: " + passenger.getCountry());
-            System.out.println("Adulto: " + passenger.getTypedoc());
-            System.out.println("Adulto: " + passenger.getDocument());
-            System.out.println("Adulto: " + passenger.getBirthdate().toString());
-            System.out.println("Adulto: " + passenger.getTelephone());
-            System.out.println("Adulto: " + passenger.getEmail());
-            //typeText(driver, By.xpath(INPUT_FIRSTNAME), passenger.getFirstName());
-            //typeText(driver, By.xpath(INPUT_SURNAME), passenger.getSurname());
-            //click(driver, By.xpath(INPUT_GENDER));
+        }catch(Throwable we){
+            ExcelReader.writeCellValue(ExcelDataObjects.EXCEL_DOC, ExcelDataObjects.PAGE_NAME, 1, 19, "FAIL");
+            mensaje = "Fallo en tiempo de respuesta";
+            stepFail(driver,mensaje);
+            generateWord.sendText(mensaje);
+            generateWord.addImageToWord(driver);
+            Assert.fail(mensaje);
         }
         return cabin.getAdults();
     }
 
-    private int fillPassengersChildren(Cabin cabin, int i, List<Passenger> passengers) throws IOException {
-        for (int j = 0; j < cabin.getChildren(); j++) {
-            sleep(500);
-            By BUTTON_PASSENGER = By.xpath("//a[@id='expandirPasajero-" + (i+j) + "']");
-            click(driver, BUTTON_PASSENGER);
+    private int fillPassengersChildren(Cabin cabin, int i, List<Passenger> passengers) throws Exception {
+        try{
+            for (int j = 0; j < cabin.getChildren(); j++) {
+                Passenger passenger = passengers.remove(0);
 
-            Passenger passenger = passengers.remove(0);
-            System.out.println("Niño: " + passenger.getFirstName());
-            System.out.println("Niño: " + passenger.getSurname());
-            System.out.println("Niño: " + passenger.getGender());
-            System.out.println("Niño: " + passenger.getCountry());
-            System.out.println("Niño: " + passenger.getTypedoc());
-            System.out.println("Niño: " + passenger.getDocument());
-            System.out.println("Niño: " + passenger.getBirthdate().toString());
+                sleep(500);
+                By BUTTON_PASSENGER = By.xpath("//a[@id='expandirPasajero-" + (i+j) + "']");
+                click(driver, BUTTON_PASSENGER);
+
+                String INPUT_FIRSTNAME = "//input[@id='ListaPasajeros[" + (i + j) + "].NombrePax']";
+                String INPUT_SURNAME = "//input[@id='ListaPasajeros[" + (i + j) + "].ApellidoPax']";
+                String INPUT_COUNTRY = "//select[@name='ListaPasajeros[" + (i + j) + "].NacionalidadPax']";
+                String INPUT_TYPEDOC = "//select[@name='ListaPasajeros[" + (i + j) + "].TipoDocumentoPax']";
+                String INPUT_DOCUMENT = "//input[@name='ListaPasajeros[" + (i + j) + "].NroDocumentoPax']";
+                String INPUT_BIRTHDAY = "//input[@name='ListaPasajeros[" + (i + j) + "].NacimientoPax']";
+
+                typeText(driver, By.xpath(INPUT_FIRSTNAME), passenger.getFirstName());
+                sleep(250);
+                typeText(driver, By.xpath(INPUT_SURNAME), passenger.getSurname());
+                sleep(250);
+                typeText(driver, By.xpath(INPUT_COUNTRY), passenger.getCountry());
+                // click(driver, By.xpath(INPUT_GENDER)); // falta implementar
+                sleep(250);
+                typeText(driver, By.xpath(INPUT_TYPEDOC), passenger.getTypedoc());
+                sleep(250);
+                typeText(driver, By.xpath(INPUT_DOCUMENT), passenger.getDocument());
+                sleep(250);
+                click(driver, By.xpath(INPUT_BIRTHDAY));
+                fillBirthday(6, 1,2010);
+                mensaje = "pasajero ninho " + (i+j) + " agregado correctamente";
+                generateWord.sendText(mensaje);
+                generateWord.addImageToWord(driver);
+                stepPass(driver,mensaje);
+            }
+        }
+        catch(Throwable we){
+            ExcelReader.writeCellValue(ExcelDataObjects.EXCEL_DOC, ExcelDataObjects.PAGE_NAME, 1, 19, "FAIL");
+            mensaje = "Fallo en tiempo de respuesta";
+            stepFail(driver,mensaje);
+            generateWord.sendText(mensaje);
+            generateWord.addImageToWord(driver);
+            Assert.fail(mensaje);
         }
         return cabin.getChildren();
+    }
+
+    private void fillBirthday(int day, int month, int year) throws IOException {
+        // falta implementa;
+
+        String SPAN_BIRTHDATE_YEAR_TITLE = "//div[@class='datepicker-years']//th[@class='datepicker-switch']";
+        String BUTTON_BIRTHDATE_YEAR_PREV = "//div[@class='datepicker-years']//th[@class='prev']";
+        String BUTTON_BIRTHDATE_YEAR_NEXT = "//div[@class='datepicker-years']//th[@class='next']";
+        String SPAN_BIRTHDATE_YEAR = "//div[@class='datepicker-years']//span[@class='year'][1]";
+        String SPAN_BIRTHDATE_MONTH = "//div[@class='datepicker-months']//span[@class='month']["+month+"]";
+        String SPAN_BIRTHDATE_DAY  = "//div[@class='datepicker-days']//td[text()='"+day+"']";
+
+        if(year == 2000){
+            sleep(250);
+            click(driver, By.xpath(BUTTON_BIRTHDATE_YEAR_PREV));
+        }
+        sleep(250);
+        click(driver, By.xpath(SPAN_BIRTHDATE_YEAR));
+        sleep(250);
+        click(driver, By.xpath(SPAN_BIRTHDATE_MONTH));
+        sleep(250);
+        click(driver, By.xpath(SPAN_BIRTHDATE_DAY));
     }
 
     private List<Cabin> filterCabin(String filter, List<Cabin> cabins){
@@ -140,7 +217,7 @@ public class PassengersPage extends BaseClass {
         return filteredCabins;
     }
 
-    private int getNPassengersAdults(List<Cabin> cabins){
+    private int passengerAdultSize(List<Cabin> cabins){
         int passegersAdults = 0;
         for (Cabin cabin : cabins) {
             passegersAdults += cabin.getAdults();
@@ -148,7 +225,7 @@ public class PassengersPage extends BaseClass {
         return passegersAdults;
     }
 
-    private int getNPassengersChildren(List<Cabin> cabins){
+    private int passengerChildrenSize(List<Cabin> cabins){
         int passegersChildren = 0;
         for (Cabin cabin : cabins) {
             passegersChildren += cabin.getChildren();
@@ -195,4 +272,21 @@ public class PassengersPage extends BaseClass {
         return passengers;
     }
 
+    public void clickContinue() throws Exception {
+        mensaje = "Se da click en el boton continuar";
+        try{
+            sleep(500);
+            click(driver, PeruRailObjects.BUTTON_CONTINUE_PASSENGERS);
+            generateWord.sendText(mensaje);
+            generateWord.addImageToWord(driver);
+            stepPass(driver,mensaje);
+        }catch(Throwable we){
+            ExcelReader.writeCellValue(ExcelDataObjects.EXCEL_DOC, ExcelDataObjects.PAGE_NAME, 1, 19, "FAIL");
+            mensaje = "Fallo en tiempo de respuesta";
+            stepFail(driver,mensaje);
+            generateWord.sendText(mensaje);
+            generateWord.addImageToWord(driver);
+            Assert.fail(mensaje);
+        }
+    }
 }
