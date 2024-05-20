@@ -50,6 +50,13 @@ public class SearchPage extends BaseClass {
             validationFrom(data.get(ExcelDataObjects.SEARCH_COLUMN_FROM));
             validationTo(data.get(ExcelDataObjects.SEARCH_COLUMN_TO));
             validationService(data.get(ExcelDataObjects.SEARCH_COLUMN_SERVICE));
+            // mejorar selecion de fechas
+            sleep(500);
+            click(driver, PeruRailObjects.SELECT_DATE);
+            sleep(500);
+            click(driver, PeruRailObjects.BUTTON_CALENDAR_NEXTMONTH);
+            sleep(500);
+            click(driver, PeruRailObjects.BUTTON_CALENDAR_FIRSTDATE);
             // se ingresan los datos correctamente
             stepPass(driver,mensaje);
             generateWord.sendText(mensaje);
@@ -126,7 +133,7 @@ public class SearchPage extends BaseClass {
         }
     }
 
-    public void performSearch() throws IOException {
+    public void clickSearch() throws IOException {
         // click en boton buscar
         click(driver, PeruRailObjects.BUTTON_SEARCH);
         sleep(500);

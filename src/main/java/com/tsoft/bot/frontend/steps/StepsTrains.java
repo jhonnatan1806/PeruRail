@@ -22,7 +22,7 @@ public class StepsTrains {
             trainsPage.selectCabin(Integer.parseInt(item));
             trainsPage.selectPassengers(Integer.parseInt(item));
         }
-        //
+        trainsPage.clickContinue();
     }
 
     @Then("^el sistema muestra un mensaje de error$")

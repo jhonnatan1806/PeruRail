@@ -72,7 +72,7 @@ public class BaseClass {
         }
     }
 
-    //OBTENER TEXTO DEL ELEMENTO
+    // OBTENER TEXTO DEL ELEMENTO
     protected String getText(WebDriver driver, By locator) throws IOException {
         try {
             return driver.findElement(locator).getText();
@@ -82,6 +82,7 @@ public class BaseClass {
         }
     }
 
+    // ESCRIBIR TEXTO
     protected void typeText(WebDriver driver, By locator, String inputText) throws IOException {
         try {
             driver.findElement(locator).sendKeys(inputText);

@@ -7,7 +7,7 @@ Feature: Pruebas de Regresion
     Scenario Outline: Compra correcta de boletos de tren
         When el usuario selecciona las opciones de busqueda de su viaje "<search>"
         And selecciona la cantidad de cabinas y pasajeros "<trains>"
-        And se completa los datos de los pasajeros
+        And se completa los datos de los pasajeros "<trains>"
         And se selecciona el metodo de pago y se aceptan los TyC
         Then se validan los detalles de la compra
         And se realiza la compra de los boletos

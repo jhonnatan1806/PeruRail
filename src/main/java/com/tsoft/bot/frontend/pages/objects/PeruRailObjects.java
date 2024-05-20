@@ -16,7 +16,11 @@ public class PeruRailObjects {
     public static final By SELECT_SERVICE = By.xpath("//select[@id='cbTrenSelect']");
     public static final By OPTION_SERVICE_BELMOND = By.xpath("//select[@id='cbTrenSelect']/option[@value='1']");
     public static final By OPTION_SERVICE_EXPEDITION = By.xpath("//select[@id='cbTrenSelect']/option[@value='2']");
+    public static final By SELECT_DATE = By.xpath("//input[@id='Filtros_Ida_Fecha']");
+    public static final By BUTTON_CALENDAR_NEXTMONTH = By.xpath("//a[@class='ui-datepicker-next ui-corner-all' and @title='Next']");
+    public static final By BUTTON_CALENDAR_FIRSTDATE = By.xpath("//a[@class='ui-state-default']");
     public static final By BUTTON_SEARCH = By.xpath("//button[@id='btn_search']");
+
 
     /* ========================
      *      TRAINS SECTION (parcialmente dinamico)
